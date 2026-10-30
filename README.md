@@ -43,7 +43,7 @@ Local photos never pass through the chat. The agent asks Secnd for a 5-minute si
 ## Layout
 
 ```
-plugin.json                      portable manifest (ChatGPT / agent-plugins 1.0.0)
+plugin.json                      portable manifest (ChatGPT / agent-plugins 1.0.0); its extensions.com.openai wins over .codex-plugin
 mcp.json                         ChatGPT MCP server entry (streamable-http + OAuth)
 .mcp.json                        Claude / Codex MCP server entry
 .claude-plugin/plugin.json       Claude plugin manifest
@@ -51,8 +51,11 @@ mcp.json                         ChatGPT MCP server entry (streamable-http + OAu
 .codex-plugin/plugin.json        Codex plugin manifest
 .agents/plugins/marketplace.json Codex marketplace
 skills/                          secnd-connector, bulk-list-from-folder, bulk-list-from-spreadsheet, bulk-edit-from-spreadsheet
+scripts/check-manifests.mjs      checks the package against OpenAI's packaging and submission rules
 docs/submission-checklist.md     what is still needed to list in the ChatGPT and Claude directories
 ```
+
+Before changing a manifest, run `node scripts/check-manifests.mjs`. It fails on the things a reviewer would bounce: an over-long listing field, a missing policy URL, a path that does not exist, a client secret, or drift between `plugin.json` and `.codex-plugin/plugin.json`.
 
 No secrets live in this repo. OAuth is handled by Secnd's login; the plugin files only carry the server URL.
 

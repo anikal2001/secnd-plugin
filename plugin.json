@@ -16,7 +16,7 @@
     "com.openai": {
       "interface": {
         "displayName": "Secnd",
-        "shortDescription": "Cross-list and manage inventory",
+        "shortDescription": "Cross-list and manage stock",
         "longDescription": "Secnd is the inventory and cross-listing system for resellers. With this plugin an assistant can search your catalog, draft listings from photos or a spreadsheet, suggest prices, publish to the marketplaces you connected, update prices, delist, and mark items sold. Every write is scoped to your own account, respects the agent permissions and daily limits you set at secnd.ca/agents, and runs as a dry run first wherever it can. Desktop agents with file access can upload photo folders directly.",
         "developerName": "Secnd",
         "category": "Productivity",
@@ -30,7 +30,8 @@
           "Draft a listing for this jacket and suggest a price.",
           "Show me my slow movers from the last 90 days."
         ],
-        "brandColor": "#111111"
+        "brandColor": "#111111",
+        "brandColorDark": "#F5F5F5"
       },
       "onboardingSkill": "./skills/secnd-connector/SKILL.md",
       "publication": {

@@ -10,8 +10,7 @@
             "type": "oauth",
             "client": {
               "mode": "dcr"
-            },
-            "registrationUrl": "https://clerk.secnd.ca/oauth/register"
+            }
           }
         }
       }

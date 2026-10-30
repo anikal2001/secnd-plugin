@@ -15,7 +15,7 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Secnd",
-    "shortDescription": "Cross-list and manage inventory",
+    "shortDescription": "Cross-list and manage stock",
     "longDescription": "Secnd is the inventory and cross-listing system for resellers. With this plugin an assistant can search your catalog, draft listings from photos or a spreadsheet, suggest prices, publish to the marketplaces you connected, update prices, delist, and mark items sold. Every write is scoped to your own account, respects the agent permissions and daily limits you set at secnd.ca/agents, and runs as a dry run first wherever it can. Desktop agents with file access can upload photo folders directly.",
     "developerName": "Secnd",
     "category": "Productivity",
@@ -29,7 +29,8 @@
       "List every item in ./photos as a draft and show me the table.",
       "Apply the price changes in ./prices.csv, dry run first."
     ],
-    "brandColor": "#111111"
+    "brandColor": "#111111",
+    "brandColorDark": "#F5F5F5"
   },
   "extensions": {
     "com.openai": {

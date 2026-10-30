@@ -1,11 +1,22 @@
 ---
 name: secnd-connector
-description: How to work with the Secnd MCP connector. Read this before the first Secnd tool call in a session, when a tool is refused, or when the seller asks what Secnd can do.
+description: Set up the Secnd connector and work with it. Run this after installing the plugin, before the first Secnd tool call in a session, when a tool is refused, or when the seller asks what Secnd can do.
 ---
 
 # Secnd connector
 
 Secnd is a reseller's inventory and cross-listing system. Every tool runs as the signed-in seller, on that seller's own catalog and connected marketplaces. There is no way to read or touch another seller's data.
+
+## First-time setup
+
+Run these four steps once, right after the plugin is installed, and report the result of each.
+
+1. **Sign in.** Call `query_data` with `{ "entity": "products", "mode": "count" }`. The first call prompts the seller to sign in to Secnd through OAuth. The count that comes back confirms the connection and tells you how big the catalog is.
+2. **Check marketplace connections.** Call `get_marketplace_listings` on any one product, or ask the seller which marketplaces they connected. Publishing only works for marketplaces connected at https://www.secnd.ca/integrations. If none are connected, say so and send them there.
+3. **Check agent permissions.** Explain that the seller controls what an agent may do at https://www.secnd.ca/agents: draft, publish, edit, remove, each with a daily limit. Reads always work. Ask which of those they want on. Do not try a write to find out.
+4. **Say what you can do here.** Name which skills this client can run. Bulk listing from a local photo folder needs file access, so it works in Claude Code, Codex and the desktop apps but not on the web, where photos need public URLs or get added on the product page.
+
+Then stop and ask what they want to do first.
 
 ## Sign-in
 
