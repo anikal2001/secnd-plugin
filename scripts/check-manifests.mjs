@@ -66,13 +66,31 @@ else {
   else pass(`interface.capabilities lists ${i.capabilities.length} entries`);
   if (!Array.isArray(i.defaultPrompt) || i.defaultPrompt.length === 0) fail('interface.defaultPrompt should offer starter prompts');
   else pass(`interface.defaultPrompt offers ${i.defaultPrompt.length} prompts`);
-  if (!i.brandColorDark) warn('interface.brandColorDark is unset; a dark-mode accent is worth adding');
-
-  // Assets are required for submission but not for an unlisted install.
+  // Icons must be square, at least 48x48, and under 5 MiB. Read the real pixels.
+  const pngSize = (p) => {
+    const b = readFileSync(join(root, p));
+    const png = b.length > 24 && b.readUInt32BE(0) === 0x89504e47;
+    return png ? { w: b.readUInt32BE(16), h: b.readUInt32BE(20), bytes: b.length } : { bytes: b.length };
+  };
   for (const a of ['logo', 'composerIcon']) {
-    if (!i[a]) warn(`interface.${a} is unset — required before submission (square, at least 48x48, under 5 MiB, in ./assets/)`);
+    if (!i[a]) { fail(`interface.${a} is unset — required for submission (square, at least 48x48, under 5 MiB, in ./assets/)`); continue; }
+    if (!existsSync(join(root, i[a]))) continue; // the path check above already failed
+    const { w, h, bytes } = pngSize(i[a]);
+    if (bytes > 5 * 1024 * 1024) fail(`interface.${a} is ${(bytes / 1024 / 1024).toFixed(2)} MiB, over the 5 MiB limit`);
+    if (w === undefined) warn(`interface.${a} is not a PNG, so its dimensions were not checked`);
+    else if (w !== h) fail(`interface.${a} is ${w}x${h}; icons must be square`);
+    else if (w < 48) fail(`interface.${a} is ${w}x${w}; icons must be at least 48x48`);
+    else pass(`interface.${a} is ${w}x${h}, square and ${(bytes / 1024).toFixed(0)} KiB`);
   }
-  if (!i.screenshots) warn('interface.screenshots is unset — at least one is required before submission');
+  if (!Array.isArray(i.screenshots) || i.screenshots.length === 0) fail('interface.screenshots needs at least one entry for submission');
+  else {
+    for (const s of i.screenshots) {
+      if (!existsSync(join(root, s))) continue;
+      const { w, h, bytes } = pngSize(s);
+      if (bytes > 5 * 1024 * 1024) fail(`screenshot ${s} is ${(bytes / 1024 / 1024).toFixed(2)} MiB, over the 5 MiB limit`);
+      else pass(`screenshot ${s} is ${w ?? '?'}x${h ?? '?'} and ${(bytes / 1024).toFixed(0)} KiB`);
+    }
+  }
 
   // Every relative path must start with ./ and resolve inside the package.
   const paths = [openai.onboardingSkill, i.logo, i.composerIcon, i.logoDark, i.composerIconDark, ...(i.screenshots ?? [])].filter(Boolean);
@@ -161,7 +179,7 @@ if (existsSync(join(root, '.codex-plugin/plugin.json'))) {
   if (codex.skills && !existsSync(join(root, codex.skills.replace(/^\.\//, '')))) fail(`.codex-plugin skills points at ${codex.skills}, which is missing`);
   // Drift check on the fields a reviewer reads.
   const i = openai?.interface ?? {};
-  const drift = Object.keys(LIMITS).concat(REQUIRED_URLS, 'category').filter((f) => JSON.stringify(codex.interface?.[f]) !== JSON.stringify(i[f]));
+  const drift = Object.keys(LIMITS).concat(REQUIRED_URLS, 'category', 'brandColor', 'logo', 'composerIcon', 'screenshots').filter((f) => JSON.stringify(codex.interface?.[f]) !== JSON.stringify(i[f]));
   if (drift.length) fail(`.codex-plugin/plugin.json interface has drifted from the root manifest: ${drift.join(', ')}`);
   else pass('.codex-plugin/plugin.json interface matches the root manifest');
   for (const f of ['name', 'version', 'description', 'license']) {

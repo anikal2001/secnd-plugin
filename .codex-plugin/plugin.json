@@ -29,8 +29,10 @@
       "List every item in ./photos as a draft and show me the table.",
       "Apply the price changes in ./prices.csv, dry run first."
     ],
-    "brandColor": "#111111",
-    "brandColorDark": "#F5F5F5"
+    "brandColor": "#6333A3",
+    "composerIcon": "./assets/composer-icon.png",
+    "logo": "./assets/logo.png",
+    "screenshots": ["./assets/screenshot-products.png"]
   },
   "extensions": {
     "com.openai": {

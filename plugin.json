@@ -30,8 +30,10 @@
           "Draft a listing for this jacket and suggest a price.",
           "Show me my slow movers from the last 90 days."
         ],
-        "brandColor": "#111111",
-        "brandColorDark": "#F5F5F5"
+        "brandColor": "#6333A3",
+        "composerIcon": "./assets/composer-icon.png",
+        "logo": "./assets/logo.png",
+        "screenshots": ["./assets/screenshot-products.png"]
       },
       "onboardingSkill": "./skills/secnd-connector/SKILL.md",
       "publication": {

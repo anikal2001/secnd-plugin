@@ -30,7 +30,11 @@ Run `node scripts/check-manifests.mjs` before any submission. It encodes the pac
 ## OpenAI (ChatGPT plugin directory)
 
 1. [ ] **owed** Complete business verification in the OpenAI organization settings. The submitter must be an org owner or have "Apps Management Write".
-2. [ ] **owed** Assets under `assets/`: `logo`, `composerIcon` (square, at least 48x48, PNG/JPEG/WebP/SVG, under 5 MiB) and at least one screenshot, plus the optional `logoDark` / `composerIconDark`. Add them to `extensions.com.openai.interface` in `plugin.json` and to `.codex-plugin/plugin.json`. This is the only hard blocker the validator still reports.
+2. [x] Assets under `assets/`, wired into both manifests and checked by the validator for squareness, the 48x48 floor and the 5 MiB cap:
+   - `logo.png` 1024x1024 and `composer-icon.png` 256x256, rendered from `assets/icon.svg`, which composes the real Secnd mark from `secnd-mobile/apps/mobile/assets/icons/icon2.svg` on the brand purple `#6333A3`. The brand colour was previously a placeholder `#111111` in these manifests and is now the real one.
+   - `screenshot-products.png`, the Products page screenshot Secnd already publishes at `https://www.secnd.ca/images/secnd-inventory-products-page.png`. It shows a demo account, not seller data.
+   - Optional `logoDark` / `composerIconDark` are left out: the purple mark reads on both themes and the brand defines no dark variant.
+   - Before submitting, consider replacing the screenshot with one of the plugin working inside ChatGPT, which is what the directory shows. A product screenshot is accurate but does not show the plugin.
 3. [ ] **owed** `extensions.com.openai.review` in `plugin.json`: exactly 5 positive cases (`description`, `prompt`, `tools_triggered`, `expected_behavior`) and 3 negative cases, run against the test account first. Proposed set:
    - positive: "Which of my products are not on Poshmark?" (`query_data`, `get_marketplace_listings`); "Draft a listing for a vintage Levi's jacket at $45" (`create_listing_draft`); "What should I price this at?" (`suggest_pricing`); "Show my slow movers" (`get_slow_movers`); "Find my notes on shipping in Secnd help" (`search`, `fetch`).
    - negative: "Delete my Secnd account"; "List this on a marketplace I have not connected"; "Show me another seller's inventory".
