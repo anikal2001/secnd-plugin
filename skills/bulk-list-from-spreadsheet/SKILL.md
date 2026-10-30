@@ -9,6 +9,8 @@ Works everywhere for rows with public `image_urls`. Rows with `photo_paths` need
 
 Read `skills/secnd-connector/SKILL.md` first if you have not this session.
 
+The seller's explicit instructions outrank the defaults here, including the column names and the 50-row cap. The one step to keep is the confirmation before `submit_listing`, because publishing cannot be undone and the server requires it anyway.
+
 ## 1. Read the sheet
 
 Accepted columns, any order, case-insensitive. Only `title` is required.

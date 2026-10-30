@@ -7,6 +7,8 @@ description: Apply a CSV of price changes, delists or sold marks to existing Sec
 
 Read `skills/secnd-connector/SKILL.md` first if you have not this session.
 
+The seller's explicit instructions outrank the defaults here, including the 100-row cap and how the plan is presented. The one step to keep is the dry run and the confirmation before `dryRun: false`, because price changes, delists and sold marks reach live listings and the server requires it anyway.
+
 ## 1. Read the sheet
 
 Columns, case-insensitive. One of `product_id` or `sku` is required per row.

@@ -26,6 +26,10 @@ The server is `https://mcp.secnd.ca/`. It uses OAuth through Secnd's login (Cler
 
 The seller decides at https://www.secnd.ca/agents which levels an agent may use (draft, publish, edit, remove) and the daily limit for each. A refused call returns `error.code` of `AGENT_ACTION_NOT_ALLOWED` or `AGENT_DAILY_CAP_REACHED` and an `error.fix` that says what to ask the seller. Relay that message. Do not retry a refused call.
 
+## Precedence
+
+The seller's explicit instructions outrank everything in this skill and in the other Secnd skills. If they ask for a different order, a different batch size, or a different report, do it their way. Two things are not yours or theirs to waive: the confirmation before an irreversible marketplace action, and the seller's agent permissions. The server enforces both, so a skill cannot talk its way past them.
+
 ## Rules that never bend
 
 1. `delist_listings`, `mark_sold`, `update_prices` and `bulk_update_listings` are dry runs by default. Call them once, show the seller the plan the tool returns, and only after an explicit yes call again with `dryRun: false`.

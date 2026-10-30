@@ -120,6 +120,36 @@ for (const [name, s] of servers) {
   }
 }
 
+// --- skill MCP dependency ---------------------------------------------
+// "If a skill requires an MCP server, declare the dependency in agents/openai.yaml."
+if (!existsSync(join(root, 'agents/openai.yaml'))) {
+  warn('agents/openai.yaml is missing; these skills require the MCP server, so the dependency should be declared');
+} else {
+  const yaml = readFileSync(join(root, 'agents/openai.yaml'), 'utf8');
+  const field = (k) => yaml.match(new RegExp(`^\\s*${k}:\\s*"?([^"\n]+)"?\\s*$`, 'm'))?.[1]?.trim();
+  const [serverName, server] = servers[0] ?? [];
+  if (!/^dependencies:/m.test(yaml) || !/^\s*tools:/m.test(yaml)) fail('agents/openai.yaml must declare dependencies.tools');
+  else if (field('value') !== serverName) fail(`agents/openai.yaml value "${field('value')}" does not match the mcp.json server name "${serverName}"`);
+  else if (field('url') !== server?.url) fail(`agents/openai.yaml url "${field('url')}" does not match the mcp.json url "${server?.url}"`);
+  else if (field('transport') !== 'streamable_http') fail(`agents/openai.yaml transport should be streamable_http, not "${field('transport')}"`);
+  else pass(`agents/openai.yaml declares the ${serverName} MCP dependency, matching mcp.json`);
+}
+
+// --- skills state instruction precedence ------------------------------
+// The instruction-following guidance: make the priority of user instructions
+// over skill guidelines explicit, or the model may pause and block work.
+if (existsSync(join(root, 'skills'))) {
+  const missing = readdirSync(join(root, 'skills'), { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .filter((d) => {
+      const body = readFileSync(join(root, 'skills', d.name, 'SKILL.md'), 'utf8');
+      return !/(outrank|take[s]? precedence|prioritize the user)/i.test(body);
+    })
+    .map((d) => d.name);
+  if (missing.length) fail(`these skills never say that explicit user instructions outrank skill guidance: ${missing.join(', ')}`);
+  else pass('every skill states that explicit user instructions outrank its own guidance');
+}
+
 // --- Codex compatibility overlay --------------------------------------
 if (existsSync(join(root, '.codex-plugin/plugin.json'))) {
   const codex = read('.codex-plugin/plugin.json');

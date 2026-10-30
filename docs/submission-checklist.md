@@ -9,6 +9,8 @@ Run `node scripts/check-manifests.mjs` before any submission. It encodes the pac
 - `node scripts/check-manifests.mjs`: 0 failures. The remaining warnings are the three owed assets plus two documented facts below.
 - `claude plugin validate .`: passed.
 - `codex plugin marketplace add anikal2001/secnd-plugin` then `codex plugin list`: the marketplace resolved from GitHub shorthand and the entry `secnd@secnd-plugins` resolved to the package root. Codex silently skips entries it cannot resolve, so this check matters.
+- `codex plugin add secnd@secnd-plugins` on Codex CLI 0.148.0: installed as version 0.2.0 with all four skills and `mcp.json` carried into `~/.codex/plugins/cache/`. Codex copied the portable root files and ignored `.codex-plugin`, `.agents` and `.claude-plugin`, which confirms the precedence note below. Both the plugin and the marketplace were removed again after the check.
+- Skill text states that explicit user instructions outrank skill guidance, which the instruction-following guidance asks for. The validator fails if a skill drops that line.
 
 ## Two things to know about this layout
 

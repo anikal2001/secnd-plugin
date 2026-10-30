@@ -9,6 +9,8 @@ Needs a client that can read local files and make HTTPS requests (Claude Code, C
 
 Read `skills/secnd-connector/SKILL.md` first if you have not this session.
 
+The seller's explicit instructions outrank the defaults here, including the grouping rule and the 50-item cap. The one step to keep is the confirmation before `submit_listing`, because publishing cannot be undone and the server requires it anyway.
+
 ## 1. Read the folder
 
 - List image files: `.jpg .jpeg .png .webp .heic .heif`. Ignore everything else.

@@ -51,6 +51,7 @@ mcp.json                         ChatGPT MCP server entry (streamable-http + OAu
 .codex-plugin/plugin.json        Codex plugin manifest
 .agents/plugins/marketplace.json Codex marketplace
 skills/                          secnd-connector, bulk-list-from-folder, bulk-list-from-spreadsheet, bulk-edit-from-spreadsheet
+agents/openai.yaml               declares that the skills depend on the Secnd MCP server
 scripts/check-manifests.mjs      checks the package against OpenAI's packaging and submission rules
 docs/submission-checklist.md     what is still needed to list in the ChatGPT and Claude directories
 ```
