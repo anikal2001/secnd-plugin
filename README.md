@@ -10,12 +10,16 @@ Every tool runs as the signed-in seller on that seller's own account. What an ag
 
 **Claude (web and desktop)**: Customize, then Plugins, then "Add marketplace", paste `https://github.com/anikal2001/secnd-plugin`, install **Secnd**. Or add it as a plain connector: Customize, Connectors, Add, Custom, URL `https://mcp.secnd.ca/`.
 
-**Claude Code**:
+**Claude Code** (2.1.275 or later):
+
+```
+/plugin install secnd --marketplace anikal2001/secnd-plugin
+```
+
+Connector only, without the skills:
 
 ```bash
 claude mcp add --transport http secnd https://mcp.secnd.ca/
-# or, for the skills as well:
-git clone https://github.com/anikal2001/secnd-plugin && claude --plugin-dir ./secnd-plugin
 ```
 
 **Codex**:
