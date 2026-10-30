@@ -1,0 +1,20 @@
+{
+  "name": "secnd",
+  "owner": {
+    "name": "Secnd",
+    "email": "support@secnd.ca"
+  },
+  "metadata": {
+    "description": "Secnd plugin for Claude: the Secnd MCP connector plus bulk-listing skills.",
+    "version": "0.2.0"
+  },
+  "plugins": [
+    {
+      "name": "secnd",
+      "source": "./",
+      "description": "List, price, delist and manage reseller inventory across marketplaces through Secnd.",
+      "version": "0.2.0",
+      "category": "productivity"
+    }
+  ]
+}

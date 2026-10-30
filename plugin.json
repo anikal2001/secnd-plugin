@@ -1,0 +1,42 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "secnd",
+  "version": "0.2.0",
+  "description": "List, price, delist and manage reseller inventory across eBay, Etsy, Poshmark, Depop, Shopify and more through Secnd.",
+  "author": {
+    "name": "Secnd",
+    "email": "support@secnd.ca",
+    "url": "https://www.secnd.ca"
+  },
+  "homepage": "https://www.secnd.ca",
+  "repository": "https://github.com/anikal2001/secnd-plugin",
+  "license": "MIT",
+  "keywords": ["reselling", "cross-listing", "inventory", "ebay", "etsy", "poshmark", "depop", "shopify"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Secnd",
+        "shortDescription": "Cross-list and manage inventory",
+        "longDescription": "Secnd is the inventory and cross-listing system for resellers. With this plugin an assistant can search your catalog, draft listings from photos or a spreadsheet, suggest prices, publish to the marketplaces you connected, update prices, delist, and mark items sold. Every write is scoped to your own account, respects the agent permissions and daily limits you set at secnd.ca/agents, and runs as a dry run first wherever it can. Desktop agents with file access can upload photo folders directly.",
+        "developerName": "Secnd",
+        "category": "Productivity",
+        "capabilities": ["Search inventory", "Create listing drafts", "Upload photos", "Publish listings", "Update prices", "Delist and mark sold"],
+        "websiteURL": "https://www.secnd.ca",
+        "supportURL": "https://www.secnd.ca/support",
+        "privacyPolicyURL": "https://www.secnd.ca/privacy",
+        "termsOfServiceURL": "https://www.secnd.ca/terms",
+        "defaultPrompt": [
+          "Which of my products are not listed on Poshmark yet?",
+          "Draft a listing for this jacket and suggest a price.",
+          "Show me my slow movers from the last 90 days."
+        ],
+        "brandColor": "#111111"
+      },
+      "onboardingSkill": "./skills/secnd-connector/SKILL.md",
+      "publication": {
+        "countries": ["CA", "US"],
+        "release_notes": "Unlisted preview: search/fetch, listing drafts, desktop photo uploads, batch calls, pricing, delist and mark sold."
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "secnd",
+  "version": "0.2.0",
+  "description": "List, price, delist and manage reseller inventory across eBay, Etsy, Poshmark, Depop, Shopify and more through Secnd. Includes desktop skills for bulk listing from photo folders and spreadsheets.",
+  "author": {
+    "name": "Secnd",
+    "email": "support@secnd.ca",
+    "url": "https://www.secnd.ca"
+  },
+  "homepage": "https://www.secnd.ca",
+  "repository": "https://github.com/anikal2001/secnd-plugin",
+  "license": "MIT",
+  "keywords": ["reselling", "cross-listing", "inventory", "ebay", "etsy", "poshmark", "depop", "shopify"],
+  "mcpServers": "./.mcp.json",
+  "skills": "./skills/"
+}
