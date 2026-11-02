@@ -23,8 +23,8 @@ Run `node scripts/check-manifests.mjs` before any submission. It encodes the pac
 - [x] `search` and `fetch` tools in the ChatGPT shape with `structuredContent` and non-empty `url` on every result.
 - [x] `GET https://mcp.secnd.ca/.well-known/openai-apps-challenge` serves the plain-text token from `OPENAI_APPS_CHALLENGE_TOKEN` (404 while unset).
 - [x] `/.well-known/oauth-protected-resource` lists `scopes_supported`.
-- [ ] **owed** Prod Clerk: advertise CIMD and require PKCE, so ChatGPT and Claude use their published client ids instead of a DCR client per seller:
-  `npx clerk@latest api instance/oauth_application_settings -X PATCH -d '{"client_id_metadata_documents_advertised":true,"pkce_required":true}'` with the prod secret key.
+- [x] Prod Clerk advertises CIMD and requires PKCE (applied 2026-11-01). Before: `pkce_required: false`, `client_id_metadata_documents_advertised: false`. After: both `true`, with `dynamic_oauth_client_registration` still `true` as the fallback. `https://clerk.secnd.ca/.well-known/oauth-authorization-server` now reports `client_id_metadata_document_supported: true`. To roll back:
+  `npx clerk@latest api instance/oauth_application_settings -X PATCH -d '{"client_id_metadata_documents_advertised":false,"pkce_required":false}'` with the prod secret key, which lives in the Elastic Beanstalk environment `Secnd-backend-env` as `CLERK_SECRET_KEY`.
 - [ ] **owed** Decide on audience (`aud`) enforcement for Clerk tokens before public listing.
 
 ## OpenAI (ChatGPT plugin directory)
@@ -45,7 +45,7 @@ Run `node scripts/check-manifests.mjs` before any submission. It encodes the pac
 8. [x] All four URLs are HTTPS and reachable **without signing in**: website, support (`/contact`), privacy (`/privacy-policy`), terms (`/terms-of-service`). The manifests previously pointed at `/support`, `/privacy` and `/terms`, which are behind the sign-in wall: each returned 200 only because the wall redirects to `/sign-in?redirect=…`, which is itself a 200 page, so a reviewer clicking the privacy policy got a login form. The validator now fetches each URL, follows redirects and fails when the final URL looks like a sign-in page. `SKIP_URL_CHECK=1` runs it offline.
 9. [ ] Build the ZIP from this repo root (no `apps`, no hooks, no secrets) and upload it via "Upload new or existing plugin". Submit the remote HTTPS endpoint through **With MCP**. Reviewer credentials and instructions go in the dashboard form, never in the ZIP, which rejects `test_credentials` and `reviewer_instructions`.
 10. [ ] Only one review can be active per plugin; wait for the verdict before re-submitting.
-11. [ ] After the operator enables CIMD on prod Clerk, change `mcp.json` auth to `"client": { "mode": "cimd" }`. CIMD does not disable the DCR fallback. `registrationUrl` is deliberately omitted because Clerk's discovery document already advertises `https://clerk.secnd.ca/oauth/register`.
+11. [x] CIMD is enabled on prod Clerk, so `mcp.json` auth is now `"client": { "mode": "cimd" }`. CIMD does not disable the DCR fallback. `registrationUrl` is deliberately omitted because Clerk's discovery document already advertises `https://clerk.secnd.ca/oauth/register`.
 
 ## Anthropic (Claude connector directory)
 
