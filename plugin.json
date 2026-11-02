@@ -22,9 +22,9 @@
         "category": "Productivity",
         "capabilities": ["Search inventory", "Create listing drafts", "Upload photos", "Publish listings", "Update prices", "Delist and mark sold"],
         "websiteURL": "https://www.secnd.ca",
-        "supportURL": "https://www.secnd.ca/support",
-        "privacyPolicyURL": "https://www.secnd.ca/privacy",
-        "termsOfServiceURL": "https://www.secnd.ca/terms",
+        "supportURL": "https://www.secnd.ca/contact",
+        "privacyPolicyURL": "https://www.secnd.ca/privacy-policy",
+        "termsOfServiceURL": "https://www.secnd.ca/terms-of-service",
         "defaultPrompt": [
           "Which of my products are not listed on Poshmark yet?",
           "Draft a listing for this jacket and suggest a price.",

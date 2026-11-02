@@ -3,6 +3,7 @@
 // https://developers.openai.com/plugins/build/plugins and
 // https://developers.openai.com/plugins/deploy/submission
 // Run: node scripts/check-manifests.mjs
+// The listing URLs are fetched for real; set SKIP_URL_CHECK=1 to run offline.
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -222,6 +223,32 @@ const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((d) => {
 const leaked = walk(root).filter((f) => /\.(json|md|mjs|js|txt|ya?ml)$/.test(f) && SECRET.test(readFileSync(f, 'utf8')) && !f.endsWith('check-manifests.mjs'));
 if (leaked.length) fail(`possible secret material in: ${leaked.join(', ')}`);
 else pass('no credential-shaped strings in the package');
+
+// --- listing URLs must be reachable without signing in -----------------
+// A 200 does not mean public. /privacy, /terms and /support all answered 200
+// by redirecting to the sign-in wall, which is itself a 200 page, so a shape
+// check on the string passed while a reviewer clicking the privacy policy got
+// a login form. Follow the redirects and look at where they land.
+const LOGIN_PATH = /(^|\/)(sign-?in|log-?in|signup|sign-?up|auth|account\/login)(\/|$)/i;
+const RETURN_PARAM = ['redirect', 'redirect_uri', 'redirect_url', 'return', 'return_to', 'returnTo', 'next', 'continue'];
+const landsOnLogin = (finalUrl) => {
+  const u = new URL(finalUrl);
+  return LOGIN_PATH.test(u.pathname) || RETURN_PARAM.some((p) => u.searchParams.has(p));
+};
+if (openai?.interface && process.env.SKIP_URL_CHECK !== '1') {
+  for (const key of REQUIRED_URLS) {
+    const url = openai.interface[key];
+    if (!url || !/^https:\/\//.test(url)) continue; // already failed above
+    try {
+      const res = await fetch(url, { redirect: 'follow', signal: AbortSignal.timeout(15000) });
+      if (!res.ok) fail(`interface.${key} ${url} returned ${res.status}`);
+      else if (landsOnLogin(res.url)) fail(`interface.${key} ${url} lands on ${res.url}: a reviewer must read it without an account`);
+      else pass(`interface.${key} is publicly reachable (${res.status}${res.url === url ? '' : ` via ${res.url}`})`);
+    } catch (err) {
+      warn(`interface.${key} ${url} could not be fetched (${err.message}); re-run with network access before submitting`);
+    }
+  }
+}
 
 // --- report -----------------------------------------------------------
 for (const m of ok) console.log(`  ok    ${m}`);
